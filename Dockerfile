@@ -1,2 +1,2 @@
 FROM nginx
-COPY site/_deploy /usr/share/nginx/html
+COPY jekyll/_site /usr/share/nginx/html
