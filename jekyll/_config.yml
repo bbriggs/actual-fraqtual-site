@@ -8,12 +8,12 @@
 # Site Settings
 destination              : "_site"
 locale                   : "en"
-title                    : "Site Title"
+title                    : "Actual Fraqtual"
 title_separator          : "-"
-name                     : "Your Name"
-description              : "An amazing website."
-url                      : # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
-baseurl                  : # the subpath of your site, e.g. "/blog"
+name                     : "Bren Briggs"
+description              : "Probably not a potato"
+url                      : "http://blog.fraq.io" # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
+baseurl                  : "" # the subpath of your site, e.g. "/blog"
 repository               : # GitHub username/repo-name e.g. "mmistakes/minimal-mistakes"
 teaser                   : # path of fallback teaser image, e.g. "/assets/images/500x300.png"
 # breadcrumbs            : false # true, false (default)
@@ -49,14 +49,14 @@ atom_feed:
   path                   : # blank (default) uses feed.xml
 
 # SEO Related
-google_site_verification :
+google_site_verification : 
 bing_site_verification   :
 alexa_site_verification  :
 yandex_site_verification :
 
 # Social Sharing
 twitter:
-  username               :
+  username               : "@brenbriggs"
 facebook:
   username               :
   app_id                 :
@@ -71,17 +71,17 @@ social:
 
 # Analytics
 analytics:
-  provider               : false # false (default), "google", "google-universal", "custom"
+  provider               : "google" # false (default), "google", "google-universal", "custom"
   google:
-    tracking_id          :
+    tracking_id          : "UA-72042652-2"
 
 
 # Site Author
 author:
-  name             : "Your Name"
+  name             : "Bren Briggs"
   avatar           : # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
-  bio              : "I am an amazing person."
-  location         : "Somewhere"
+  bio              : ""
+  location         : "The internet"
   email            :
   uri              :
   bitbucket        :
@@ -90,9 +90,9 @@ author:
   flickr           :
   facebook         :
   foursquare       :
-  github           :
+  github           : "bbriggs"
   google_plus      :
-  keybase          :
+  keybase          : "fraq"
   instagram        :
   lastfm           :
   linkedin         :
@@ -101,7 +101,7 @@ author:
   stackoverflow    : # "123456/username" (the last part of your profile url, e.g. http://stackoverflow.com/users/123456/username)
   steam            :
   tumblr           :
-  twitter          :
+  twitter          : "@brenbriggs"
   vine             :
   weibo            :
   xing             :
@@ -231,6 +231,11 @@ compress_html:
   ignore:
     envs: development
 
+# Collections
+collections:
+  docs:
+    output: true
+    permalink: /:collection/:path/
 
 # Defaults
 defaults:
