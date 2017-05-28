@@ -1,1 +1,1 @@
-docker stop blog && git pull && ./run.sh
+docker stop blog && docker rm blog && git pull && ./run.sh
