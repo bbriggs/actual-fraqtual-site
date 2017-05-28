@@ -4,11 +4,12 @@ categories:
   - tech
 tags:
   - hackathons
+  - talks
 
 author: bren_briggs
 ---
 
-_The following the article version of a talk I gave at SxSW 2017 which you can find [here](https://soundcloud.com/officialsxsw/no-chatbots-plz-writing-targeted-challenge-statements-sxsw-2017)_
+_The following is the article version of a talk I gave at SxSW 2017 which you can find [here](https://soundcloud.com/officialsxsw/no-chatbots-plz-writing-targeted-challenge-statements-sxsw-2017)_
 
 “You either die a hero or live long enough to see yourself develop a chatbot,” or so goes the joke on Twitter. For hackathons, this seems to be doubly true. Among other culprits, it seems that the same chatbot-powered solutions get presented at hackathons over and over with little variation. While it could be said that they are solving problems, a core criterion of any submission at such an event, they are also often far from novel at this point. Why does this matter? Well, a mass collaboration also seeks and values novelty in solutions. The problem here isn’t chatbots or Twitter services to monitor something or another awful IOT device begging to be found on Shodan. Truly novel applications of these things exist and are being created, but seeing them show up in groups at every single event is the symptom of a larger phenomenon--a problem.
 
