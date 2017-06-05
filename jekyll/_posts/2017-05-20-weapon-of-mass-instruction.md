@@ -6,7 +6,7 @@ tags:
   - update
   - meta
 
-author: bren_briggs
+author: Bren Briggs
 ---
 
 It's been almost a year since I've written anything and almost as long since I took the blog down. Thanks to the people who messaged me freaking out thinking that the broken keybase proof for my old blog was some kind of canary and I was warning my friends. I'm flattered, actually.

@@ -6,7 +6,7 @@ tags:
   - hackathons
   - talks
 
-author: bren_briggs
+author: Bren Briggs
 ---
 
 _The following is the article version of a talk I gave at SxSW 2017 which you can find [here](https://soundcloud.com/officialsxsw/no-chatbots-plz-writing-targeted-challenge-statements-sxsw-2017)_

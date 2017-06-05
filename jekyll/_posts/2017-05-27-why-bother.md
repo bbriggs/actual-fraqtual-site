@@ -8,7 +8,7 @@ tags:
  - opinion
  - tech
 
-author: bren_briggs
+author: Bren Briggs
 
 ---
 

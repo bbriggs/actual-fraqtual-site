@@ -8,7 +8,7 @@ tags:
   - ops
   - tutorial
 
-author: bren_briggs
+author: Bren Briggs
 
 excerpt: "A tutorial on using consul-template to automatically update configurations in your docker containers"
 
