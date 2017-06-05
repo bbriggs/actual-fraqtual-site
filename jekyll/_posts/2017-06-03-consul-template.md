@@ -10,7 +10,7 @@ tags:
 
 author: bren_briggs
 
-excerpt: "A tutorial on how using consul-template to automatically update configurations in your docker containers"
+excerpt: "A tutorial on using consul-template to automatically update configurations in your docker containers"
 
 ---
 
