@@ -27,9 +27,13 @@ Vault is only accessible via the Elastic Load Balancer, which itself is only acc
 This is what the local forward looks like in my `~/.ssh/config`:
 
 ```
+Host Bastion
+  Hostname mybastion.mysite.org
+  LocalForward 55555 vault.mysite.org:443
+  ControlMaster auto
 ```
 
-And here is the equivalent SSH command: `ssh blah blah blah`
+And just connecting to the server sets up the forwarder: `ssh Bastion`
 
 However, we have a problem: Minikube needs to connect to Vault as well but is on an isolated network on my laptop. How do I expose Vault to Kubernetes inside this onion of networks? Let's do it the hard way.
 
@@ -52,7 +56,7 @@ An actual example: `ssh -R 9999:127.0.0.1:8200 myserver` would open a connection
 
 [How to lose your job with SSH, part 1](https://blather.michaelwlucas.com/archives/945)
 
-[How to list your job with SSH, part 2](https://blather.michaelwlucas.com/archives/959)
+[How to lose your job with SSH, part 2](https://blather.michaelwlucas.com/archives/959)
 
 Back? Was that cool or what? Let's move on...
 
