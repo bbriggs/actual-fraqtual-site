@@ -1,0 +1,16 @@
+sudo: required
+
+services:
+- docker
+
+env:
+  global:
+  - secure: F64eqKeO+lfysSOCK5mhLJO9Nmet3GrmgV8pk6R20vBS+LzULYto++Da54hd7SSaFQow1/EW+uEO0Xix7lNOlTdaGVS8VuUOvAP9Zzt+GFNI1ckTadmmdswsFiSUAvYUJKm4fFpk9gHVBmmR0TG8GhPFp8WgcasvKdIZiCaIyHHgkLyaOjpK9WpMCEkzLclUP03Oz93JITILqwHkJE75rq1kQTKJfCpL2adWQnSUGAcIsBd5dhNxtmp1E0CR8iazhghRF5zE1q41Vagopo39eOcFMk2JThP9iEg5tcMoMtG96fU/PS+d7tm1mI2/8scIt6LoUPFEBtGDit+8ZP4mX0/MrVoIwin9c9lEcSojKpNxJIpQjQA0XSWy9Uz0SxXwPV0eIdVv5lZbs39lIdMNUQXBILGGHPL0YAnqyTCqYZozJGSjoCfqY/CcdTHKE1oCFKK9Hhtetcy3MPWsnbO0lh1Egwluu+l2iTIoU5m6ekST8g4DkNtAow5op52qePYJnjjVD7bMYS+SGfcwXvDBFLPZHBrFK85Yp/gDkF33bn5tu0KEGZbWCwFIGlncOdf0abBDHE2BTuVdw/HhFUTPhH7jUzRIBMDYH8GOtacFpxWV5ekoEJKl1DxxrMbvv624GDvudD9rHjesjeY1re8AC1mT04Vk+guh/x0jD8pfEuw=
+  - secure: SsaZd/cAmC+YonlQ7HgWzHcWNyJ/OKXMwAWf9QjR+CFP1DjbCI9tnwJkVe+0rgr361pcshY57QSVujRJ+EZHIz79jHUsWqv17J7+reGOOqz/XeQlTGrdwvOH0zEPB2h1GCdz1wC/pOk1Q3qr7G/13MO4WWJ2ngtdWM4TqQeBKQeJKsx2VWf7gMLG6L+wsndgyMy0i6LN+LhD0nI+fFTvZnPXE0vwbrJqs57jY5M/BoF2lsclXFiflhLlAZbbFY3Xu4exWyTRAc0uh1MN591lBWUKspKO4zj7ZVyi0en+VTPKGYtaA8Ma5SiFe6ntCtWIgsZEbJLkq+GoTOQkZ+1yYlXTK8Wpq7AeixWqmWf7hjZ6WYhngKrciqv051et/sxYZLjrFBT2IgOlB5bQgoNxbxUaq7utPbefGu7tm45Ypz1ThFyAXbR7av66FJx5K0ysShq3sk//lEmzcE1B0oBN72K6UmfUHxmJYd3h2ZbZ8VVxnkbxvmo37z+3Kl7amMiaPNXCXacjHgsLs7ElOUv2EPjZodiuwm8l3QEtLrqqJjnqrvS1I45aC+ncNVmfkIy+NdJoiXrCZx0USyEwvYbiI3DsTIZszgARBc0YYmWmMiknhXkDubU/owAxCfC+0LQ7w0k1QduQs1jvnmGE/X7cxm9Xpoxbg/WVz5cGYO0kHig=
+
+script:
+  - docker login -p $DOCKER_PASS -u $DOCKER_USER
+  - docker run --volume=$(pwd)/jekyll:/srv/jekyll jekyll/jekyll jekyll build
+  - docker pull bbriggs/blog
+  - docker build -t bbriggs/blog .
+  - docker push bbriggs/blog
