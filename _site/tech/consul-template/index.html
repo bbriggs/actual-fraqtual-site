@@ -1,0 +1,701 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.4.1 by Michael Rose
+  Copyright 2017 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE.txt
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin SEO -->
+
+
+
+
+
+
+
+
+
+<title>A practical and simple consul-template example - Actual Fraqtual</title>
+
+
+
+
+<meta name="description" content="A tutorial on using consul-template to automatically update configurations in your docker containers">
+
+
+
+
+<meta name="author" content="Bren Briggs">
+
+<meta property="og:locale" content="en">
+<meta property="og:site_name" content="Actual Fraqtual">
+<meta property="og:title" content="A practical and simple consul-template example">
+
+
+  <link rel="canonical" href="http://blog.fraq.io/tech/consul-template/">
+  <meta property="og:url" content="http://blog.fraq.io/tech/consul-template/">
+
+
+
+  <meta property="og:description" content="A tutorial on using consul-template to automatically update configurations in your docker containers">
+
+
+
+  <meta name="twitter:site" content="@brenbriggs">
+  <meta name="twitter:title" content="A practical and simple consul-template example">
+  <meta name="twitter:description" content="A tutorial on using consul-template to automatically update configurations in your docker containers">
+  <meta name="twitter:url" content="http://blog.fraq.io/tech/consul-template/">
+
+  
+    <meta name="twitter:card" content="summary">
+    
+  
+
+  
+    <meta name="twitter:creator" content="@brenbriggs">
+  
+
+
+
+  
+
+  
+
+
+
+
+
+  <meta property="og:type" content="article">
+  <meta property="article:published_time" content="2017-06-03T00:00:00+00:00">
+
+
+
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context" : "http://schema.org",
+      "@type" : "Person",
+      "name" : "A blog about ops and stuff",
+      "url" : "http://blog.fraq.io",
+      "sameAs" : null
+    }
+  </script>
+
+
+
+
+
+
+<!-- end SEO -->
+
+
+<link href="http://blog.fraq.io/feed.xml" type="application/atom+xml" rel="alternate" title="Actual Fraqtual Feed">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://blog.fraq.io/assets/css/main.css">
+
+<!--[if lte IE 9]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+<meta http-equiv="cleartype" content="on">
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use http://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+  </head>
+
+  <body class="layout--single">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+    <div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        <a class="site-title" href="http://blog.fraq.io/">Actual Fraqtual</a>
+        <ul class="visible-links">
+          
+            
+            <li class="masthead__menu-item"><a href="http://blog.fraq.io/posts/">Posts</a></li>
+          
+        </ul>
+        <button><div class="navicon"></div></button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+    
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+<div itemscope itemtype="http://schema.org/Person">
+
+  
+
+  <div class="author__content">
+    <h3 class="author__name" itemprop="name">Bren Briggs</h3>
+    
+      <p class="author__bio" itemprop="description">
+        An ops engineer who just repeats what smart people say. Follower of Jesus, husband, father, builder of clouds and planner of hackathons. I've written a few things things you will probably never use and patched lots of things you have. I have lots of opinions on theology, teams, and chatops.
+      </p>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+        <li>
+          <a href="http://blog.fraq.io" itemprop="url">
+            <i class="fa fa-fw fa-chain" aria-hidden="true"></i> Website
+          </a>
+        </li>
+      
+
+      
+        <li>
+          <a href="mailto:briggs.brenton@gmail.com">
+            <meta itemprop="email" content="briggs.brenton@gmail.com" />
+            <i class="fa fa-fw fa-envelope-square" aria-hidden="true"></i> Email
+          </a>
+        </li>
+      
+
+      
+
+      
+        <li>
+          <a href="https://twitter.com/brenbriggs" itemprop="sameAs">
+            <i class="fa fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+        <li>
+          <a href="https://github.com/bbriggs" itemprop="sameAs">
+            <i class="fa fa-fw fa-github" aria-hidden="true"></i> GitHub
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs">
+      <i class="fa fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="http://schema.org/CreativeWork">
+    <meta itemprop="headline" content="A practical and simple consul-template example">
+    <meta itemprop="description" content="A tutorial on using consul-template to automatically update configurations in your docker containers">
+    <meta itemprop="datePublished" content="June 03, 2017">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 class="page__title" itemprop="headline">A practical and simple consul-template example
+</h1>
+          
+            <p class="page__meta"><i class="fa fa-clock-o" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+</p>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        <h2 id="introduction">Introduction</h2>
+
+<p>In this tutorial, we will be using Consul and consul-template to fetch configuration values for a simple application (a chatbot), then watch for updates to the configuration values and automatically restart the service if a value changes. Finally, we will wrap all of this in a Docker container.</p>
+
+<p>This tutorial also assumes you have a Consul cluster up and running. If you don’t have one, set one up a dev instance real fast and expose it on localhost like this:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>docker run -d --name=dev-consul -p 8500:8500 consul
+</code></pre>
+</div>
+
+<p>This will expose a single-node consul cluster which other containers or local apps can use either by linking or addressing http://localhost:8500 from your host machine. <em>Do not use this in prod</em>, this is just for a demonstration.</p>
+
+<hr />
+
+<h3 id="what-even-is-consul-template">What even is consul-template</h3>
+
+<p>First, a quick explanation of <a href="https://www.consul.io/">Consul</a> and <a href="https://github.com/hashicorp/consul-template">consul-template</a>.</p>
+
+<p>Consul, in Hashicorp’s own words:</p>
+
+<blockquote>
+  <p>Consul has multiple components, but as a whole, it is a tool for discovering and configuring services in your infrastructure.</p>
+</blockquote>
+
+<p>and one key feature of Consul:</p>
+
+<blockquote>
+  <p>KV Store: Applications can make use of Consul’s hierarchical key/value store for any number of purposes, including dynamic configuration, feature flagging, coordination, leader election, and more. The simple HTTP API makes it easy to use.</p>
+</blockquote>
+
+<p>In other words, you can set an arbitrary key to an arbitrary value (like <code class="highlighter-rouge">app/foo="bar"</code>) which applications can read back (ie <code class="highlighter-rouge">GET app/foo</code> returns <code class="highlighter-rouge">"bar"</code>) and use for configuration or other things. Hashicorp’s consul-template takes that key/value store and integrates it with Go’s templating language to allow users to build configuration files from a mix of static and dynamic data. It also provides an additional feature that watches keys rendered and “manages” a child process by attempting to restart it if a value changes. This is ideal for applications that consume config files and require restarts to pick up changes to those files.</p>
+
+<hr />
+
+<h3 id="the-demo-application">The demo application</h3>
+
+<p>As our demo application, we’ll use a <a href="https://github.com/bbriggs/MissMoneyPenney">Legobot</a> I deployed to an IRC community I hang out in. If you want to follow along at home, go ahead and clone this down.</p>
+
+<p>There are a few files in root, but only 3 are important for this:</p>
+<ul>
+  <li><code class="highlighter-rouge">chatbot.py</code></li>
+  <li><code class="highlighter-rouge">requirements.txt</code></li>
+  <li><code class="highlighter-rouge">config.ini</code></li>
+</ul>
+
+<p>I wrap all this in a Python docker container (see <code class="highlighter-rouge">run.sh</code>) but the workflow is the same: Install requirements in <code class="highlighter-rouge">requirements.txt</code>, then start it with <code class="highlighter-rouge">python ./chatbot.py</code>, which loads its configs from <code class="highlighter-rouge">config.ini</code>. The goal here is to replace the hardcoded values in the config file with dynamically generated content from Consul.</p>
+
+<p>Here is the original <code class="highlighter-rouge">config.ini</code>:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>[irc1]
+channels=#0x00sec,#rp
+username=MissMoneyPenney
+password=
+host=irc.0x00sec.org
+port=6697
+ssl=True
+</code></pre>
+</div>
+
+<p>Let’s go ahead and replace these with values we have set in our Consul cluster (connecting to the UI at http://127.0.0.1:8500 in your browser is useful for this next part). Call it <code class="highlighter-rouge">config.ini.tmpl</code>:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>[irc1]
+channels={{ key "bots/mmp/channels" }}
+username={{key "bots/mmp/username" }}
+password={{ keyOrDefault "bots/mmp/password" "" }}
+host={{ key "bots/mmp/host }}
+port={{ keyOrDefault "bots/mmp/port" "6697" }}
+ssl={{keyOrDefault "bots/mmp/ssl" "True" }}
+</code></pre>
+</div>
+
+<p>Notice that I used a different function for some keys: <code class="highlighter-rouge">keyOrDefault</code> does just what it sounds like: It looks for a key at the given location and adds the second argument if the key isn’t found. As you’re setting these keys in your Consul cluster, I recommend using values for your own desired IRC server and channel.</p>
+
+<h3 id="running-the-app">Running the app</h3>
+
+<p>I have published this container on <a href="https://hub.docker.com/r/bbriggs/consul-template-demo/">Docker Hub</a> for your convenience, but I’m going to go ahead and show the Dockerfile with a breakdown of each section:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code># Use whatever base works for your app
+FROM python:3
+
+# Install consul-template
+WORKDIR /tmp
+RUN curl https://releases.hashicorp.com/consul-template/0.18.5/consul-template_0.18.5_linux_amd64.tgz -o consul-template.tgz
+RUN gunzip consul-template.tgz
+RUN tar -xf consul-template.tar
+RUN mv consul-template /opt/consul-template
+RUN rm -rf /tmp/consul-template*
+
+# I use /usr/src for this app. Again, whatever works for you
+WORKDIR /usr/src
+
+# I did this wrong and ended up with multiple instances of the same bot in a channel, so this will gets its own paragraph
+CMD pip install -r ./requirements.txt &amp;&amp; /opt/consul-template -config "consul-template.hcl" --template "config.ini.tmpl:config.ini" -exec "python ./chatbot.py"
+</code></pre>
+</div>
+
+<p>This Dockerfile assumes that you have a consul-template config called <code class="highlighter-rouge">consul-template.hcl</code> in the working dir and you have a template called <code class="highlighter-rouge">config.ini.tmpl</code> that consul-template will consume. Since we are linking the consul container, the consul-template config points to a hostname of <code class="highlighter-rouge">consul</code>.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>docker run -it --name mmp --link dev-consul:consul -v `pwd`:/usr/src bbriggs/consul-template-demo
+</code></pre>
+</div>
+
+<p>Check and see that the bot is running in your IRC channel, and follow the docker logs to watch it build:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>docker logs -f consul-template-demo
+</code></pre>
+</div>
+<hr />
+
+<h3 id="watching-exec-mode-magic">Watching exec mode magic</h3>
+
+<p>Consul-template’s exec mode allows consul-template to watch for changes in keys it has rendered in the template while managing the a child process you tell it to start. In our case, we told it to start a python application.</p>
+
+<p>Now that the container is running and hopefully responding to commands in the IRC channel (try sending <code class="highlighter-rouge">!help</code> in the channel to test), open up the Consul web UI, navigate to the key-value store, and change the username/nickname of the bot while watching the docker logs. If everything was done right, consul-template will send a SIGTERM to the <code class="highlighter-rouge">python chatbot.py</code> process then start it again. As the python process starts again, it will consume the new config that consul-tempalte has generated. Ta-da! We now have an application that automatically updates on changes to consul values, even if it wasn’t exactly consul-friendly to begin with!</p>
+
+<h3 id="a-small-caveat">A small caveat</h3>
+
+<p>While it’s handy, you should also take note of how exec mode handles the process you give it: exec mode will attempt to send a SIGTERM to the process and then start it again. Remember when I said I accidentally ended up with lots of legobot instances running around? That’s actually what happened here. The original:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>CMD /opt/consul-template --template "config.ini.tmpl:config.ini" -exec "pip install -r ./requirements.txt &amp;&amp; python ./chatbot.py"
+</code></pre>
+</div>
+
+<p>This meant that the sigterm was getting sent to pip install and not python. I tried this again by putting both into a bash script, but the same problem happened. Two solutions:</p>
+<ol>
+  <li>Trap the SIGTERM in bash, like Hashicorp suggests</li>
+  <li>Arrange your CMD or ENTRYPOINT so that non-persistent tasks (like a <code class="highlighter-rouge">pip install</code>) are ordered first and the SIGTERM gets sent to the right place.</li>
+</ol>
+
+<p>Read more on this in the consul-template <a href="https://github.com/hashicorp/consul-template#exec-mode">documentation on exec mode</a>.</p>
+
+<h3 id="homework">Homework</h3>
+
+<p>Experiment with Consul and consul-temaplte for yourself by applying this to other services such as Nginx. You can also play around with different ways of getting consul template to talk to consul, such as using the <code class="highlighter-rouge">--net=host</code> option, linking containers, or port forwarding.</p>
+
+<p>Happy hacking!</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fa fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="http://blog.fraq.io/tags/#consul" class="page__taxonomy-item" rel="tag">consul</a><span class="sep">, </span>
+    
+      
+      
+      <a href="http://blog.fraq.io/tags/#consul-template" class="page__taxonomy-item" rel="tag">consul-template</a><span class="sep">, </span>
+    
+      
+      
+      <a href="http://blog.fraq.io/tags/#ops" class="page__taxonomy-item" rel="tag">ops</a><span class="sep">, </span>
+    
+      
+      
+      <a href="http://blog.fraq.io/tags/#tutorial" class="page__taxonomy-item" rel="tag">tutorial</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fa fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="http://blog.fraq.io/categories/#tech" class="page__taxonomy-item" rel="tag">tech</a>
+    
+    </span>
+  </p>
+
+
+        
+          <p class="page__date"><strong><i class="fa fa-fw fa-calendar" aria-hidden="true"></i> Updated:</strong> <time datetime="2017-06-03T00:00:00+00:00">June 03, 2017</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?via=brenbriggs&text=A practical and simple consul-template example http://blog.fraq.io/tech/consul-template/" class="btn btn--twitter" title="Share on Twitter"><i class="fa fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http://blog.fraq.io/tech/consul-template/" class="btn btn--facebook" title="Share on Facebook"><i class="fa fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://plus.google.com/share?url=http://blog.fraq.io/tech/consul-template/" class="btn btn--google-plus" title="Share on Google Plus"><i class="fa fa-fw fa-google-plus" aria-hidden="true"></i><span> Google+</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http://blog.fraq.io/tech/consul-template/" class="btn btn--linkedin" title="Share on LinkedIn"><i class="fa fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="http://blog.fraq.io/tech/why-bother/" class="pagination--pager" title="Why bother?
+">Previous</a>
+    
+    
+      <a href="http://blog.fraq.io/tech/exposing-local-services-to-minikube/" class="pagination--pager" title="Exposing local services to Minikube using SSH
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You May Also Enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="http://blog.fraq.io/tech/exposing-local-services-to-minikube/" rel="permalink">Exposing local services to Minikube using SSH
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="fa fa-clock-o" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Alternative title: The first time I used ssh -R for something that wasn’t probably illegal
+</p>
+  </article>
+</div>
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="http://blog.fraq.io/tech/why-bother/" rel="permalink">Why bother?
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="fa fa-clock-o" aria-hidden="true"></i> 
+
+
+
+
+  3 minute read
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">“You can’t save the world in 24 hours, you know.” People in IRC can be stunningly pragmatic and striaghforward sometimes.
+
+</p>
+  </article>
+</div>
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="http://blog.fraq.io/meta/weapon-of-mass-instruction/" rel="permalink">A weapon of mass instruction
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="fa fa-clock-o" aria-hidden="true"></i> 
+
+
+
+
+  less than 1 minute read
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">It’s been almost a year since I’ve written anything and almost as long since I took the blog down. Thanks to the people who messaged me freaking out thinking...</p>
+  </article>
+</div>
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="http://blog.fraq.io/tech/no-chatbots/" rel="permalink">No Chatbots, Plz
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="fa fa-clock-o" aria-hidden="true"></i> 
+
+
+
+
+  4 minute read
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">The following is the article version of a talk I gave at SxSW 2017 which you can find here
+
+</p>
+  </article>
+</div>
+        
+      </div>
+    </div>
+  
+</div>
+
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+    
+      <li><a href="https://twitter.com/brenbriggs"><i class="fa fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+    
+    
+    
+      <li><a href="http://github.com/bbriggs"><i class="fa fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+    
+    
+    <li><a href="http://blog.fraq.io/feed.xml"><i class="fa fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2017 A blog about ops and stuff. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+      </footer>
+    </div>
+
+    <script src="http://blog.fraq.io/assets/js/main.min.js"></script>
+
+
+
+
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-72042652-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+  </body>
+</html>
+

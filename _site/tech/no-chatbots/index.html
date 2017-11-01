@@ -1,0 +1,457 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.4.1 by Michael Rose
+  Copyright 2017 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE.txt
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin SEO -->
+
+
+
+
+
+
+
+
+
+<title>No Chatbots, Plz - Actual Fraqtual</title>
+
+
+
+
+<meta name="description" content="The following is the article version of a talk I gave at SxSW 2017 which you can find here">
+
+
+
+
+<meta name="author" content="Bren Briggs">
+
+<meta property="og:locale" content="en">
+<meta property="og:site_name" content="Actual Fraqtual">
+<meta property="og:title" content="No Chatbots, Plz">
+
+
+  <link rel="canonical" href="http://blog.fraq.io/tech/no-chatbots/">
+  <meta property="og:url" content="http://blog.fraq.io/tech/no-chatbots/">
+
+
+
+  <meta property="og:description" content="The following is the article version of a talk I gave at SxSW 2017 which you can find here">
+
+
+
+  <meta name="twitter:site" content="@brenbriggs">
+  <meta name="twitter:title" content="No Chatbots, Plz">
+  <meta name="twitter:description" content="The following is the article version of a talk I gave at SxSW 2017 which you can find here">
+  <meta name="twitter:url" content="http://blog.fraq.io/tech/no-chatbots/">
+
+  
+    <meta name="twitter:card" content="summary">
+    
+  
+
+  
+    <meta name="twitter:creator" content="@brenbriggs">
+  
+
+
+
+  
+
+  
+
+
+
+
+
+  <meta property="og:type" content="article">
+  <meta property="article:published_time" content="2017-05-20T00:00:00+00:00">
+
+
+
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context" : "http://schema.org",
+      "@type" : "Person",
+      "name" : "A blog about ops and stuff",
+      "url" : "http://blog.fraq.io",
+      "sameAs" : null
+    }
+  </script>
+
+
+
+
+
+
+<!-- end SEO -->
+
+
+<link href="http://blog.fraq.io/feed.xml" type="application/atom+xml" rel="alternate" title="Actual Fraqtual Feed">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://blog.fraq.io/assets/css/main.css">
+
+<!--[if lte IE 9]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+<meta http-equiv="cleartype" content="on">
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use http://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+  </head>
+
+  <body class="layout--single">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+    <div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        <a class="site-title" href="http://blog.fraq.io/">Actual Fraqtual</a>
+        <ul class="visible-links">
+          
+            
+            <li class="masthead__menu-item"><a href="http://blog.fraq.io/posts/">Posts</a></li>
+          
+        </ul>
+        <button><div class="navicon"></div></button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+    
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+<div itemscope itemtype="http://schema.org/Person">
+
+  
+
+  <div class="author__content">
+    <h3 class="author__name" itemprop="name">Bren Briggs</h3>
+    
+      <p class="author__bio" itemprop="description">
+        An ops engineer who just repeats what smart people say. Follower of Jesus, husband, father, builder of clouds and planner of hackathons. I've written a few things things you will probably never use and patched lots of things you have. I have lots of opinions on theology, teams, and chatops.
+      </p>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+        <li>
+          <a href="http://blog.fraq.io" itemprop="url">
+            <i class="fa fa-fw fa-chain" aria-hidden="true"></i> Website
+          </a>
+        </li>
+      
+
+      
+        <li>
+          <a href="mailto:briggs.brenton@gmail.com">
+            <meta itemprop="email" content="briggs.brenton@gmail.com" />
+            <i class="fa fa-fw fa-envelope-square" aria-hidden="true"></i> Email
+          </a>
+        </li>
+      
+
+      
+
+      
+        <li>
+          <a href="https://twitter.com/brenbriggs" itemprop="sameAs">
+            <i class="fa fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+        <li>
+          <a href="https://github.com/bbriggs" itemprop="sameAs">
+            <i class="fa fa-fw fa-github" aria-hidden="true"></i> GitHub
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs">
+      <i class="fa fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="http://schema.org/CreativeWork">
+    <meta itemprop="headline" content="No Chatbots, Plz">
+    <meta itemprop="description" content="The following is the article version of a talk I gave at SxSW 2017 which you can find here">
+    <meta itemprop="datePublished" content="May 20, 2017">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 class="page__title" itemprop="headline">No Chatbots, Plz
+</h1>
+          
+            <p class="page__meta"><i class="fa fa-clock-o" aria-hidden="true"></i> 
+
+
+
+
+  4 minute read
+</p>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        <p><em>The following is the article version of a talk I gave at SxSW 2017 which you can find <a href="https://soundcloud.com/officialsxsw/no-chatbots-plz-writing-targeted-challenge-statements-sxsw-2017">here</a></em></p>
+
+<p>“You either die a hero or live long enough to see yourself develop a chatbot,” or so goes the joke on Twitter. For hackathons, this seems to be doubly true. Among other culprits, it seems that the same chatbot-powered solutions get presented at hackathons over and over with little variation. While it could be said that they are solving problems, a core criterion of any submission at such an event, they are also often far from novel at this point. Why does this matter? Well, a mass collaboration also seeks and values novelty in solutions. The problem here isn’t chatbots or Twitter services to monitor something or another awful IOT device begging to be found on Shodan. Truly novel applications of these things exist and are being created, but seeing them show up in groups at every single event is the symptom of a larger phenomenon–a problem.</p>
+
+<h2 id="and-the-problem-is">And the problem is?</h2>
+
+<p>However, chatbots are not the problem… Lazy ideas are. We might be tempted to stop there and berate developers for pitching these “lazy ideas” over the wall and declare the investigation finished and problem solved. Of course if that were the case, I wouldn’t be writing this article and you wouldn’t be reading it. There’s an even more fundamental root cause for these lazy ideas, and it goes by many names: writer’s block, the blank canvas problem, creative paralysis, etc. When faced with an overwhelming set of possibilities and a short timeframe in which to work, people often default to the safe solution instead of taking a creative risk. Given that hackathons are all about creative risks (or should be, but that’s another story), how do we fix this? We go from the top down by starting with the organizers by providing a little creative push in the form of slightly more specific challenge prompts or problem sets. Rather than asking our people to just go cure cancer, we give them a specific problem faced by researchers or organizations that has a broad range of possible approaches for solving.</p>
+
+<p>In order to provide this nudge, this ever so slight push, we have to first figure out where to push and how hard, which requires a bit of introspection. Things such as the goals of the hackathon, a theme, and whether the goals and theme align with the organization’s mission and purpose are great questions to ask at this point. Are you an organization that people care about? Or maybe even that people hate? Your reputation and exposure are worth considering and will affect your recruitment. Are you attempting to get a specific software product or solution out of the event? If so, you’re barking up the wrong tree and should reconsider your approach. In short, get a good grasp on your ideas about the event and what your organization does (and why!). If you’re anything like me and the number of organizations I’ve helped through this process, you’ll discover that you incorrectly assumed many things which will require some adjusting. Don’t fret. That’s why we go through this process.</p>
+
+<h2 id="direction--boundaries">Direction &gt; Boundaries</h2>
+
+<p>After taking inventory of yourself, take a look at who will be coming. What sort of skill sets do you expect? What experience levels will be represented? Will it be a diverse group? The makeup of your attendees will affect the sorts of things you can reasonably expect them to make progress on in a given time frame. Take all this as input into deciding what challenges you want to lay before the talented and creative group you will be hosting. Our goal and purpose is to neutralize this creative paralysis, so using what we know about ourselves, our event, and our people, we give them a direction. Instead of saying to a musician, “Hey, write me a song” or to a developer, “You’re a programmer. Go code something!” we are communicating a problem and doing it in a way that creates empathy. Nobody wants to build on internal tooling that just makes you more money, but people certainly care about big problems that impact social issues. And once again, we scope appropriately. A problem set that’s too broad invites writer’s block while one that’s too narrow leaves people constrained. Remember: Your hackers prefer direction over boundaries. We don’t prescribe solutions, we describe problems in a relatable fashion, provide them the tools and data, then step out of their way. These are generally the sort of people that will climb a mountain simply because it’s there. Therefore, a properly communicated problem becomes the mountain that begs to be summitted. And because we are giving direction instead of setting boundaries, our participants work with us, not for us.</p>
+
+<h2 id="a-parting-thought">A parting thought</h2>
+
+<p>I’ve spoken with a number of people on this topic and every single one says, “Yes! I have this writer’s block problem with {topic}” It’s not a phenomenon unique to hackathon by any means. Furthermore, while the solution I proposed here, giving people a small nudge to kickstart the creativity, is done with hackathons in mind, it can certainly be generalized and applied to any number of situations. A final exhortation for those with that technical writer’s block: While creativity can feel fickle, just be patient, try to relax, set a distinct goal, and then just attack your problem. It might take a while to get into a creative mindset, just get to work anyways and ideas will flow. We are as much artists as engineers.</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fa fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="http://blog.fraq.io/tags/#hackathons" class="page__taxonomy-item" rel="tag">hackathons</a><span class="sep">, </span>
+    
+      
+      
+      <a href="http://blog.fraq.io/tags/#talks" class="page__taxonomy-item" rel="tag">talks</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fa fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="http://blog.fraq.io/categories/#tech" class="page__taxonomy-item" rel="tag">tech</a>
+    
+    </span>
+  </p>
+
+
+        
+          <p class="page__date"><strong><i class="fa fa-fw fa-calendar" aria-hidden="true"></i> Updated:</strong> <time datetime="2017-05-20T00:00:00+00:00">May 20, 2017</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?via=brenbriggs&text=No Chatbots, Plz http://blog.fraq.io/tech/no-chatbots/" class="btn btn--twitter" title="Share on Twitter"><i class="fa fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http://blog.fraq.io/tech/no-chatbots/" class="btn btn--facebook" title="Share on Facebook"><i class="fa fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://plus.google.com/share?url=http://blog.fraq.io/tech/no-chatbots/" class="btn btn--google-plus" title="Share on Google Plus"><i class="fa fa-fw fa-google-plus" aria-hidden="true"></i><span> Google+</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http://blog.fraq.io/tech/no-chatbots/" class="btn btn--linkedin" title="Share on LinkedIn"><i class="fa fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="#" class="pagination--pager disabled">Previous</a>
+    
+    
+      <a href="http://blog.fraq.io/meta/weapon-of-mass-instruction/" class="pagination--pager" title="A weapon of mass instruction
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+    
+      <li><a href="https://twitter.com/brenbriggs"><i class="fa fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+    
+    
+    
+      <li><a href="http://github.com/bbriggs"><i class="fa fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+    
+    
+    <li><a href="http://blog.fraq.io/feed.xml"><i class="fa fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2017 A blog about ops and stuff. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+      </footer>
+    </div>
+
+    <script src="http://blog.fraq.io/assets/js/main.min.js"></script>
+
+
+
+
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-72042652-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+  </body>
+</html>
+

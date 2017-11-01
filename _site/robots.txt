@@ -1,0 +1,1 @@
+Sitemap: http://blog.fraq.io/sitemap.xml
