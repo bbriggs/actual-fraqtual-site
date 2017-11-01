@@ -36,8 +36,8 @@
 <meta property="og:title" content="A practical and simple consul-template example">
 
 
-  <link rel="canonical" href="http://blog.fraq.io/tech/consul-template/">
-  <meta property="og:url" content="http://blog.fraq.io/tech/consul-template/">
+  <link rel="canonical" href="http://localhost:4000/tech/consul-template/">
+  <meta property="og:url" content="http://localhost:4000/tech/consul-template/">
 
 
 
@@ -48,7 +48,7 @@
   <meta name="twitter:site" content="@brenbriggs">
   <meta name="twitter:title" content="A practical and simple consul-template example">
   <meta name="twitter:description" content="A tutorial on using consul-template to automatically update configurations in your docker containers">
-  <meta name="twitter:url" content="http://blog.fraq.io/tech/consul-template/">
+  <meta name="twitter:url" content="http://localhost:4000/tech/consul-template/">
 
   
     <meta name="twitter:card" content="summary">
@@ -70,7 +70,7 @@
 
 
   <meta property="og:type" content="article">
-  <meta property="article:published_time" content="2017-06-03T00:00:00+00:00">
+  <meta property="article:published_time" content="2017-06-03T00:00:00-04:00">
 
 
 
@@ -84,7 +84,7 @@
       "@context" : "http://schema.org",
       "@type" : "Person",
       "name" : "A blog about ops and stuff",
-      "url" : "http://blog.fraq.io",
+      "url" : "http://localhost:4000",
       "sameAs" : null
     }
   </script>
@@ -97,7 +97,7 @@
 <!-- end SEO -->
 
 
-<link href="http://blog.fraq.io/feed.xml" type="application/atom+xml" rel="alternate" title="Actual Fraqtual Feed">
+<link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title="Actual Fraqtual Feed">
 
 <!-- http://t.co/dKP3o1e -->
 <meta name="HandheldFriendly" content="True">
@@ -109,7 +109,7 @@
 </script>
 
 <!-- For all browsers -->
-<link rel="stylesheet" href="http://blog.fraq.io/assets/css/main.css">
+<link rel="stylesheet" href="http://localhost:4000/assets/css/main.css">
 
 <!--[if lte IE 9]>
   <style>
@@ -143,11 +143,11 @@
   <div class="masthead__inner-wrap">
     <div class="masthead__menu">
       <nav id="site-nav" class="greedy-nav">
-        <a class="site-title" href="http://blog.fraq.io/">Actual Fraqtual</a>
+        <a class="site-title" href="http://localhost:4000/">Actual Fraqtual</a>
         <ul class="visible-links">
           
             
-            <li class="masthead__menu-item"><a href="http://blog.fraq.io/posts/">Posts</a></li>
+            <li class="masthead__menu-item"><a href="http://localhost:4000/posts/">Posts</a></li>
           
         </ul>
         <button><div class="navicon"></div></button>
@@ -302,9 +302,8 @@
 
 <p>This tutorial also assumes you have a Consul cluster up and running. If you don’t have one, set one up a dev instance real fast and expose it on localhost like this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>docker run -d --name=dev-consul -p 8500:8500 consul
-</code></pre>
-</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run -d --name=dev-consul -p 8500:8500 consul
+</code></pre></div></div>
 
 <p>This will expose a single-node consul cluster which other containers or local apps can use either by linking or addressing http://localhost:8500 from your host machine. <em>Do not use this in prod</em>, this is just for a demonstration.</p>
 
@@ -345,27 +344,25 @@
 
 <p>Here is the original <code class="highlighter-rouge">config.ini</code>:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>[irc1]
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[irc1]
 channels=#0x00sec,#rp
 username=MissMoneyPenney
 password=
 host=irc.0x00sec.org
 port=6697
 ssl=True
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Let’s go ahead and replace these with values we have set in our Consul cluster (connecting to the UI at http://127.0.0.1:8500 in your browser is useful for this next part). Call it <code class="highlighter-rouge">config.ini.tmpl</code>:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>[irc1]
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[irc1]
 channels={{ key "bots/mmp/channels" }}
 username={{key "bots/mmp/username" }}
 password={{ keyOrDefault "bots/mmp/password" "" }}
 host={{ key "bots/mmp/host }}
 port={{ keyOrDefault "bots/mmp/port" "6697" }}
 ssl={{keyOrDefault "bots/mmp/ssl" "True" }}
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Notice that I used a different function for some keys: <code class="highlighter-rouge">keyOrDefault</code> does just what it sounds like: It looks for a key at the given location and adds the second argument if the key isn’t found. As you’re setting these keys in your Consul cluster, I recommend using values for your own desired IRC server and channel.</p>
 
@@ -373,7 +370,7 @@ ssl={{keyOrDefault "bots/mmp/ssl" "True" }}
 
 <p>I have published this container on <a href="https://hub.docker.com/r/bbriggs/consul-template-demo/">Docker Hub</a> for your convenience, but I’m going to go ahead and show the Dockerfile with a breakdown of each section:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code># Use whatever base works for your app
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Use whatever base works for your app
 FROM python:3
 
 # Install consul-template
@@ -389,20 +386,17 @@ WORKDIR /usr/src
 
 # I did this wrong and ended up with multiple instances of the same bot in a channel, so this will gets its own paragraph
 CMD pip install -r ./requirements.txt &amp;&amp; /opt/consul-template -config "consul-template.hcl" --template "config.ini.tmpl:config.ini" -exec "python ./chatbot.py"
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>This Dockerfile assumes that you have a consul-template config called <code class="highlighter-rouge">consul-template.hcl</code> in the working dir and you have a template called <code class="highlighter-rouge">config.ini.tmpl</code> that consul-template will consume. Since we are linking the consul container, the consul-template config points to a hostname of <code class="highlighter-rouge">consul</code>.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>docker run -it --name mmp --link dev-consul:consul -v `pwd`:/usr/src bbriggs/consul-template-demo
-</code></pre>
-</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run -it --name mmp --link dev-consul:consul -v `pwd`:/usr/src bbriggs/consul-template-demo
+</code></pre></div></div>
 
 <p>Check and see that the bot is running in your IRC channel, and follow the docker logs to watch it build:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>docker logs -f consul-template-demo
-</code></pre>
-</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker logs -f consul-template-demo
+</code></pre></div></div>
 <hr />
 
 <h3 id="watching-exec-mode-magic">Watching exec mode magic</h3>
@@ -415,9 +409,8 @@ CMD pip install -r ./requirements.txt &amp;&amp; /opt/consul-template -config "c
 
 <p>While it’s handy, you should also take note of how exec mode handles the process you give it: exec mode will attempt to send a SIGTERM to the process and then start it again. Remember when I said I accidentally ended up with lots of legobot instances running around? That’s actually what happened here. The original:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>CMD /opt/consul-template --template "config.ini.tmpl:config.ini" -exec "pip install -r ./requirements.txt &amp;&amp; python ./chatbot.py"
-</code></pre>
-</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CMD /opt/consul-template --template "config.ini.tmpl:config.ini" -exec "pip install -r ./requirements.txt &amp;&amp; python ./chatbot.py"
+</code></pre></div></div>
 
 <p>This meant that the sigterm was getting sent to pip install and not python. I tried this again by putting both into a bash script, but the same problem happened. Two solutions:</p>
 <ol>
@@ -452,19 +445,19 @@ CMD pip install -r ./requirements.txt &amp;&amp; /opt/consul-template -config "c
     
       
       
-      <a href="http://blog.fraq.io/tags/#consul" class="page__taxonomy-item" rel="tag">consul</a><span class="sep">, </span>
+      <a href="http://localhost:4000/tags/#consul" class="page__taxonomy-item" rel="tag">consul</a><span class="sep">, </span>
     
       
       
-      <a href="http://blog.fraq.io/tags/#consul-template" class="page__taxonomy-item" rel="tag">consul-template</a><span class="sep">, </span>
+      <a href="http://localhost:4000/tags/#consul-template" class="page__taxonomy-item" rel="tag">consul-template</a><span class="sep">, </span>
     
       
       
-      <a href="http://blog.fraq.io/tags/#ops" class="page__taxonomy-item" rel="tag">ops</a><span class="sep">, </span>
+      <a href="http://localhost:4000/tags/#ops" class="page__taxonomy-item" rel="tag">ops</a><span class="sep">, </span>
     
       
       
-      <a href="http://blog.fraq.io/tags/#tutorial" class="page__taxonomy-item" rel="tag">tutorial</a>
+      <a href="http://localhost:4000/tags/#tutorial" class="page__taxonomy-item" rel="tag">tutorial</a>
     
     </span>
   </p>
@@ -485,14 +478,14 @@ CMD pip install -r ./requirements.txt &amp;&amp; /opt/consul-template -config "c
     
       
       
-      <a href="http://blog.fraq.io/categories/#tech" class="page__taxonomy-item" rel="tag">tech</a>
+      <a href="http://localhost:4000/categories/#tech" class="page__taxonomy-item" rel="tag">tech</a>
     
     </span>
   </p>
 
 
         
-          <p class="page__date"><strong><i class="fa fa-fw fa-calendar" aria-hidden="true"></i> Updated:</strong> <time datetime="2017-06-03T00:00:00+00:00">June 03, 2017</time></p>
+          <p class="page__date"><strong><i class="fa fa-fw fa-calendar" aria-hidden="true"></i> Updated:</strong> <time datetime="2017-06-03T00:00:00-04:00">June 03, 2017</time></p>
         
       </footer>
 
@@ -501,24 +494,24 @@ CMD pip install -r ./requirements.txt &amp;&amp; /opt/consul-template -config "c
     <h4 class="page__share-title">Share on</h4>
   
 
-  <a href="https://twitter.com/intent/tweet?via=brenbriggs&text=A practical and simple consul-template example http://blog.fraq.io/tech/consul-template/" class="btn btn--twitter" title="Share on Twitter"><i class="fa fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+  <a href="https://twitter.com/intent/tweet?via=brenbriggs&text=A practical and simple consul-template example http://localhost:4000/tech/consul-template/" class="btn btn--twitter" title="Share on Twitter"><i class="fa fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
 
-  <a href="https://www.facebook.com/sharer/sharer.php?u=http://blog.fraq.io/tech/consul-template/" class="btn btn--facebook" title="Share on Facebook"><i class="fa fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/tech/consul-template/" class="btn btn--facebook" title="Share on Facebook"><i class="fa fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
 
-  <a href="https://plus.google.com/share?url=http://blog.fraq.io/tech/consul-template/" class="btn btn--google-plus" title="Share on Google Plus"><i class="fa fa-fw fa-google-plus" aria-hidden="true"></i><span> Google+</span></a>
+  <a href="https://plus.google.com/share?url=http://localhost:4000/tech/consul-template/" class="btn btn--google-plus" title="Share on Google Plus"><i class="fa fa-fw fa-google-plus" aria-hidden="true"></i><span> Google+</span></a>
 
-  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http://blog.fraq.io/tech/consul-template/" class="btn btn--linkedin" title="Share on LinkedIn"><i class="fa fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http://localhost:4000/tech/consul-template/" class="btn btn--linkedin" title="Share on LinkedIn"><i class="fa fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
 </section>
 
 
       
   <nav class="pagination">
     
-      <a href="http://blog.fraq.io/tech/why-bother/" class="pagination--pager" title="Why bother?
+      <a href="http://localhost:4000/tech/why-bother/" class="pagination--pager" title="Why bother?
 ">Previous</a>
     
     
-      <a href="http://blog.fraq.io/tech/exposing-local-services-to-minikube/" class="pagination--pager" title="Exposing local services to Minikube using SSH
+      <a href="http://localhost:4000/tech/exposing-local-services-to-minikube/" class="pagination--pager" title="Exposing local services to Minikube using SSH
 ">Next</a>
     
   </nav>
@@ -543,7 +536,7 @@ CMD pip install -r ./requirements.txt &amp;&amp; /opt/consul-template -config "c
     
     <h2 class="archive__item-title" itemprop="headline">
       
-        <a href="http://blog.fraq.io/tech/exposing-local-services-to-minikube/" rel="permalink">Exposing local services to Minikube using SSH
+        <a href="http://localhost:4000/tech/exposing-local-services-to-minikube/" rel="permalink">Exposing local services to Minikube using SSH
 </a>
       
     </h2>
@@ -570,7 +563,7 @@ CMD pip install -r ./requirements.txt &amp;&amp; /opt/consul-template -config "c
     
     <h2 class="archive__item-title" itemprop="headline">
       
-        <a href="http://blog.fraq.io/tech/why-bother/" rel="permalink">Why bother?
+        <a href="http://localhost:4000/tech/why-bother/" rel="permalink">Why bother?
 </a>
       
     </h2>
@@ -598,7 +591,7 @@ CMD pip install -r ./requirements.txt &amp;&amp; /opt/consul-template -config "c
     
     <h2 class="archive__item-title" itemprop="headline">
       
-        <a href="http://blog.fraq.io/meta/weapon-of-mass-instruction/" rel="permalink">A weapon of mass instruction
+        <a href="http://localhost:4000/meta/weapon-of-mass-instruction/" rel="permalink">A weapon of mass instruction
 </a>
       
     </h2>
@@ -624,7 +617,7 @@ CMD pip install -r ./requirements.txt &amp;&amp; /opt/consul-template -config "c
     
     <h2 class="archive__item-title" itemprop="headline">
       
-        <a href="http://blog.fraq.io/tech/no-chatbots/" rel="permalink">No Chatbots, Plz
+        <a href="http://localhost:4000/tech/no-chatbots/" rel="permalink">No Chatbots, Plz
 </a>
       
     </h2>
@@ -667,7 +660,7 @@ CMD pip install -r ./requirements.txt &amp;&amp; /opt/consul-template -config "c
       <li><a href="http://github.com/bbriggs"><i class="fa fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
     
     
-    <li><a href="http://blog.fraq.io/feed.xml"><i class="fa fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    <li><a href="http://localhost:4000/feed.xml"><i class="fa fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
   </ul>
 </div>
 
@@ -675,7 +668,7 @@ CMD pip install -r ./requirements.txt &amp;&amp; /opt/consul-template -config "c
       </footer>
     </div>
 
-    <script src="http://blog.fraq.io/assets/js/main.min.js"></script>
+    <script src="http://localhost:4000/assets/js/main.min.js"></script>
 
 
 
